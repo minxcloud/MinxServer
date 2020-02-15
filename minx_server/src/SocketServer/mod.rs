@@ -5,7 +5,7 @@ mod udp_server;
 use udp_server::*;
 
 pub trait socket_server_t {
-	fn run (&mut self) -> io::Result<()>;
+	async fn run (&mut self) -> io::Result<()>;
 	fn send_data (&mut self, _addr: SocketAddr, &_buf: [u8]) -> io::Result<()>;
 }
 
