@@ -23,7 +23,49 @@ struct Client {
 
 type ClientMap = HashMap<Vec<u8>, (net::SocketAddr, Client)>;
 
-fn main () -> Result<()> {
+use std::{thread, time};
+use std::future;
+
+//thread::sleep (time::Duration::from_millis (10));
+//_future.poll ();
+
+async fn print_async2 () {
+	println! ("print_async2");
+}
+
+async fn print_async () -> thread::ThreadId {
+	let a = thread::current ().id ();
+	println! ("print_async begin");
+	print_async2 ().await;
+	println! ("print_async end");
+	a
+}
+
+use async_std::{
+    fs::File, // 支持异步操作的文件结构体
+    task, // 调用调度器
+    prelude::* // Future或输入输出流
+};
+
+fn main() {
+    let _run = print_async ();
+    let _run2 = print_async ();
+	let _run = task::spawn (_run); //  task::spawn    task::block_on
+	let _run2 = task::spawn (_run2);
+	thread::sleep (time::Duration::from_millis (10));
+	println! ("main end");
+	let _id = task::block_on (_run);
+	let _id2 = task::block_on (_run2);
+	if _id == _id2 {
+		println! ("thread id is equal {}", _id);
+	} else {
+		println! ("thread id is not equal");
+	}
+}
+
+
+
+fn main2 () -> Result<()> {
 	let mut buf = [0; 65535];
 	let mut out = [0; MAX_DATAGRAM_SIZE];
 
