@@ -1,6 +1,0 @@
-[submodule "quiche"]
-	path = quiche
-	url = https://github.com/cloudflare/quiche
-[submodule "raft-rs"]
-	path = raft-rs
-	url = https://github.com/tikv/raft-rs
